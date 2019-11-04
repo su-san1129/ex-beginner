@@ -2,7 +2,6 @@ package com.example.controller;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -28,12 +27,15 @@ public class ShoppingCart {
 	@RequestMapping("")
 	public String index(Model model) {
 		@SuppressWarnings("unchecked")
+		// cartはsessionから取得したものを使用
 		List<Item> cartList = (List<Item>) session.getAttribute("cartList");
 		
+		// もしカートが存在しなければ、新規に作成
 		if(cartList == null) {
 			cartList = new LinkedList<>();
 			session.setAttribute("cartList", cartList);
 		}
+		// 追加、削除にindexが必要なためLinkedList
 		List<Item> itemList = new LinkedList<>();
 		Item item1 = new Item("手帳ノート", 1000);
 		Item item2 = new Item("文房具セット", 1500);
@@ -42,6 +44,8 @@ public class ShoppingCart {
 		itemList.add(item2);
 		itemList.add(item3);
 		application.setAttribute("itemList", itemList);
+		
+		// 合計金額を表示
 		int totalPrice = 0;
 		for (Item item : cartList) {
 			totalPrice = totalPrice + item.getPrice();
@@ -59,7 +63,6 @@ public class ShoppingCart {
 		List<Item> cartList = (List<Item>) session.getAttribute("cartList");
 		cartList.add(itemList.get(index));
 		System.out.println(cartList);
-		
 		return "redirect:/exam06";
 	}
 	
