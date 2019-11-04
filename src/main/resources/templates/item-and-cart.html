@@ -2,7 +2,7 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>演習６</title>
 </head>
 <body>
 <div class="items">
@@ -10,9 +10,24 @@
   <p>applicationスコープ</p>
   <div th:each="item,status : ${application.itemList}">
     <span th:text="${item.name}"></span>
-    <span th:text="${item.price}"></span>
+    <span th:text="${#numbers.formatInteger(item.price, 2, 'COMMA')}"></span>
     <input type="button" th:value="${status.index}">
+    <a th:href="@{'/exam06/incart/' + ${status.index}}">カートへ</a>
   </div>
 </div>
+<hr>
+<div class="cart-items">
+  <p>ショッピングカート</p>
+  <p>sessionスコープ</p>
+  <div th:each="item,status : ${session.cartList}">
+    <span th:text="${item.name}"></span>
+    <span th:text="${#numbers.formatInteger(item.price, 2, 'COMMA')}"></span>
+    <input type="button" th:value="${status.index}">
+    <a th:href="@{'/exam06/delete/' + ${status.index}}">削除</a>
+  </div>
+  <p>合計(requestスコープ):</p>
+  <span th:text="${#numbers.formatInteger(totalPrice, 2, 'COMMA')}"></span>円
+</div>
 </body>
+
 </html>
